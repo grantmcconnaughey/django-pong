@@ -11,9 +11,9 @@ before_install:
   - pip install coveralls
 
 install:
-  - pip install Django==${DJANGO}
   - pip install -e .
   - pip install -r requirements_dev.txt
+  - pip install Django==${DJANGO}
 
 script: coverage run --source pong runtests.py tests
 
