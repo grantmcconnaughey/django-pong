@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
@@ -31,7 +32,7 @@ class Game(models.Model):
         return '{} vs. {}'.format(self.player1, self.player2)
 
     def get_absolute_url(self):
-        return ''
+        return reverse('pong_game_detail', args=[self.pk])
 
     @property
     def player1_points(self):
@@ -51,10 +52,10 @@ class Game(models.Model):
 
     def get_winner(self):
         if (self.player1_points >= self.POINTS_TO_WIN and
-                self.player1_points - self.player2_points > self.MUST_WIN_BY):
+                self.player1_points - self.player2_points >= self.MUST_WIN_BY):
             return self.player1
         elif (self.player2_points >= self.POINTS_TO_WIN and
-                self.player2_points - self.player1_points > self.MUST_WIN_BY):
+                self.player2_points - self.player1_points >= self.MUST_WIN_BY):
             return self.player2
         else:
             return None

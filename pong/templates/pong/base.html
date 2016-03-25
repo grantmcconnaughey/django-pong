@@ -10,7 +10,7 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static "css/styles.css" %}">
+  {% block css-additional %}{% endblock %}
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -42,17 +42,18 @@
 
   {% block content %}{% endblock %}
 
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <p class="pull-right">&copy; 2016 Acme Django Pong</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+{#  <footer>#}
+{#    <div class="container">#}
+{#      <div class="row">#}
+{#        <div class="col-md-12">#}
+{#          <p class="pull-right">&copy; 2016 Django Pong</p>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </footer>#}
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  {% block js-additional %}{% endblock %}
 </body>
 </html>

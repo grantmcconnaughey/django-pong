@@ -4,25 +4,77 @@
 
 {% block title %}{{ game }}{% endblock %}
 
+{% block css-additional %}
+  <style>
+    .player-points {
+      font-size: 2.0em;
+      font-weight: bold;
+      padding: 1em 2em;
+      border: 1px solid #666;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: .5em;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
   <div class="container">
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <ol class="breadcrumb">
-          <li><a href="/">Games</a></li>
-          <li class="active">{{ game }}</li>
-        </ol>
-
+      <div class="col-md-12">
         <div class="page-header">
           <h1>{{ game }}</h1>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 text-center">
+        <h2>{{ game.player1 }}</h2>
 
-        <div>
-          <dl class="dl-horizontal">
+        <div id="player1Points" class="player-points">{{ game.player1_points }}</div>
 
-          </dl>
-        </div>
+        {% if not game.game_over %}
+          <div>
+            <button type="button" data-player="1" class="btn btn-primary btn-lg score-point-button">Score Point</button>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-md-2 text-center">
+        vs.
+      </div>
+      <div class="col-md-5 text-center">
+        <h2>{{ game.player2 }}</h2>
+
+        <div id="player2Points" class="player-points">{{ game.player2_points }}</div>
+
+        {% if not game.game_over %}
+          <div>
+            <button type="button" data-player="2" class="btn btn-primary btn-lg score-point-button">Score Point</button>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block js-additional %}
+<script>
+  var gameId = {{ game.pk }};
+
+  $('.score-point-button').on('click', function(e) {
+    var button = $(this);
+    var player = button.data('player');
+
+    var data = {
+      game_id: gameId,
+      player: player,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    };
+
+    $.post("{% url 'pong_add_point' %}", data, function(d) {
+      var points = $('#player' + player + 'Points');
+      points.text(d['player' + player + '_points']);
+    });
+  });
+</script>
 {% endblock %}

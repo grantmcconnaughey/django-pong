@@ -1,9 +1,11 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView
 
 from .forms import GameForm
-from .models import Game
+from .models import Game, Player
 
 
 def index(request):
@@ -27,4 +29,27 @@ class GameCreateView(CreateView):
 class GameDetailView(DetailView):
     model = Game
     template_name = 'pong/game/detail.html'
+
+
+@require_POST
+def add_point(request):
+    game = get_object_or_404(Game, pk=request.POST['game_id'])
+    player = getattr(game, 'player%s' % request.POST['player'])
+    game.add_point(player)
+
+    game_over = game.game_over()
+    winner = None
+    loser = None
+    if game_over:
+        game.refresh_from_db()
+        winner = game.winner
+        loser = game.loser
+
+    data = {
+        'game_over': game.game_over(),
+        'player1_points': game.player1_points,
+        'player2_points': game.player2_points,
+    }
+
+    return JsonResponse(data)
 
