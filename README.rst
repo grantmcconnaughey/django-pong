@@ -2,11 +2,14 @@
 django-pong
 =============================
 
-.. image:: https://badge.fury.io/py/django-pong.png
+.. image:: https://badge.fury.io/py/django-pong.svg
     :target: https://badge.fury.io/py/django-pong
 
-.. image:: https://travis-ci.org/grantmcconnaughey/django-pong.png?branch=master
+.. image:: https://travis-ci.org/grantmcconnaughey/django-pong.svg?branch=master
     :target: https://travis-ci.org/grantmcconnaughey/django-pong
+
+.. image:: https://coveralls.io/repos/github/grantmcconnaughey/django-pong/badge.svg?branch=master
+    :target: https://coveralls.io/github/grantmcconnaughey/django-pong?branch=master
 
 A Django app to track ping pong games.
 
