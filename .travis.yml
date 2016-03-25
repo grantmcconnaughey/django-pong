@@ -18,15 +18,15 @@ install:
 script: coverage run --source pong runtests.py tests
 
 env:
-  - DJANGO=1.8.8
+  - DJANGO=1.8.11
   - DJANGO=1.9.4
 
 matrix:
   exclude:
     - python: 3.2
-      env: DJANGO=1.9.2
+      env: DJANGO=1.9.4
     - python: 3.3
-      env: DJANGO=1.9.2
+      env: DJANGO=1.9.4
 
 after_success:
   - coveralls

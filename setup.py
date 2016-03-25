@@ -53,6 +53,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
+        'django-bootstrap3',
     ],
     license="BSD",
     zip_safe=False,
@@ -68,6 +69,7 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',

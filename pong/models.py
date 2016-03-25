@@ -15,21 +15,13 @@ class Player(models.Model):
     def games_played(self):
         return Game.objects.filter(Q(player1=self) | Q(player2=self))
 
-    @property
-    def wins(self):
-        return Game.objects.filter(winner=self)
-
-    @property
-    def losses(self):
-        return Game.objects.filter(loser=self)
-
 
 @python_2_unicode_compatible
 class Game(models.Model):
-    player1 = models.ForeignKey('pong.Player')
-    player2 = models.ForeignKey('pong.Player')
-    winner = models.ForeignKey('pong.Player', null=True, blank=True)
-    loser = models.ForeignKey('pong.Player', null=True, blank=True)
+    player1 = models.ForeignKey('pong.Player', related_name='+')
+    player2 = models.ForeignKey('pong.Player', related_name='+')
+    winner = models.ForeignKey('pong.Player', null=True, blank=True, related_name='wins')
+    loser = models.ForeignKey('pong.Player', null=True, blank=True, related_name='losses')
     date = models.DateTimeField(auto_now_add=True)
 
     POINTS_TO_WIN = 11
@@ -38,6 +30,9 @@ class Game(models.Model):
     def __str__(self):
         return '{} vs. {}'.format(self.player1, self.player2)
 
+    def get_absolute_url(self):
+        return ''
+
     @property
     def player1_points(self):
         return Point.objects.filter(game=self, player=self.player1).count()
@@ -45,6 +40,14 @@ class Game(models.Model):
     @property
     def player2_points(self):
         return Point.objects.filter(game=self, player=self.player2).count()
+
+    @property
+    def winning_score(self):
+        return max([self.player1_points, self.player2_points])
+
+    @property
+    def losing_score(self):
+        return min([self.player1_points, self.player2_points])
 
     def get_winner(self):
         if (self.player1_points >= self.POINTS_TO_WIN and
