@@ -12,9 +12,21 @@ class Player(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('pong_player_detail', args=[self.pk])
+
     @property
     def games_played(self):
         return Game.objects.filter(Q(player1=self) | Q(player2=self))
+
+    @property
+    def win_percentage(self):
+        games_played = self.games_played.count()
+        if games_played == 0:
+            return 0.0
+
+        wins = self.wins.all().count()
+        return (wins / (games_played * 1.0)) * 100.0
 
 
 @python_2_unicode_compatible

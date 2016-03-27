@@ -1,5 +1,7 @@
+from operator import attrgetter
+
 from django.core.urlresolvers import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView
@@ -9,17 +11,19 @@ from .models import Game, Player
 
 
 def index(request):
-    games = Game.objects.all().order_by('-date')[:10]
+    games = Game.objects.all().order_by('-date')[:5]
+    leaderboard = sorted(
+        Player.objects.all(), key=attrgetter('win_percentage'), reverse=True)
 
     return render(request, 'pong/index.html', {
         'games': games,
+        'leaderboard': leaderboard,
     })
 
 
 class GameCreateView(CreateView):
     model = Game
     form_class = GameForm
-    context_object_name = 'games'
     template_name = 'pong/game/create.html'
 
     def get_success_url(self):
@@ -33,17 +37,13 @@ class GameDetailView(DetailView):
 
 @require_POST
 def add_point(request):
-    game = get_object_or_404(Game, pk=request.POST['game_id'])
-    player = getattr(game, 'player%s' % request.POST['player'])
-    game.add_point(player)
+    player_number = request.POST['player']
+    if str(player_number) not in ['1', '2']:
+        return HttpResponseBadRequest()
 
-    game_over = game.game_over()
-    winner = None
-    loser = None
-    if game_over:
-        game.refresh_from_db()
-        winner = game.winner
-        loser = game.loser
+    game = get_object_or_404(Game, pk=request.POST['game_id'])
+    player = getattr(game, 'player%s' % player_number)
+    game.add_point(player)
 
     data = {
         'game_over': game.game_over(),
@@ -53,3 +53,7 @@ def add_point(request):
 
     return JsonResponse(data)
 
+
+class PlayerDetailView(DetailView):
+    model = Player
+    template_name = 'pong/player/detail.html'

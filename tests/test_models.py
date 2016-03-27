@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-test_django-pong
-------------
-
-Tests for `django-pong` models module.
-"""
-
 from django.test import TestCase
 
 from pong.models import Game, Player, Point
@@ -51,6 +44,36 @@ class PlayerModelTests(TestCase):
         GameFactory()
 
         self.assertEqual(len(player.games_played), 4)
+
+    def test_win_percentage(self):
+        player = PlayerFactory()
+        GameFactory(player1=player, winner=player)
+        GameFactory(player1=player, winner=player)
+        GameFactory(player1=player, winner=player)
+        GameFactory(player1=player, loser=player)
+        GameFactory(player1=player, loser=player)
+
+        self.assertEqual(player.win_percentage, 60.0)
+
+    def test_win_percentage_no_wins(self):
+        player = PlayerFactory()
+        GameFactory(player1=player, loser=player)
+        GameFactory(player1=player, loser=player)
+
+        self.assertEqual(player.win_percentage, 0.0)
+
+    def test_win_percentage_no_games(self):
+        player = PlayerFactory()
+
+        self.assertEqual(player.win_percentage, 0.0)
+
+    def test_win_percentage_all_wins(self):
+        player = PlayerFactory()
+        GameFactory(player1=player, winner=player)
+        GameFactory(player1=player, winner=player)
+        GameFactory(player1=player, winner=player)
+
+        self.assertEqual(player.win_percentage, 100.0)
 
 
 class GameModelTests(TestCase):

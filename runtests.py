@@ -14,9 +14,13 @@ try:
         },
         ROOT_URLCONF="pong.urls",
         INSTALLED_APPS=[
+            "django.contrib.admin",
             "django.contrib.auth",
             "django.contrib.contenttypes",
+            "django.contrib.sessions",
             "django.contrib.sites",
+            "django.contrib.staticfiles",
+            "bootstrap3",
             "pong",
         ],
         SITE_ID=1,

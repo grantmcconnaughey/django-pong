@@ -12,31 +12,63 @@
           <h1>Django Pong</h1>
         </div>
         {% bootstrap_messages %}
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Game</th>
-                <th>Winner</th>
-                <th>Loser</th>
-                <th>Score</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for game in games %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="panel panel-default">
+          <div class="panel-heading">Recent Games</div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
                 <tr>
-                  <td><a href="{{ game.get_absolute_url }}">{{ game }}</a></td>
-                  <td>{{ game.winner }}</td>
-                  <td>{{ game.loser }}</td>
-                  <td>{{ game.winning_score }} - {{ game.losing_score }}</td>
-                  <td>{{ game.date }}</td>
+                  <th>Game</th>
+                  <th>Score</th>
+                  <th>Date</th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          <div class="text-center">
-            {# {% bootstrap_pagination page_obj %} #}
+              </thead>
+              <tbody>
+                {% for game in games %}
+                  <tr>
+                    <td>
+                      <a href="{{ game.get_absolute_url }}">
+                        {% if game.game_over %}
+                          <strong>{{ game.winner }}</strong> defeated <strong>{{ game.loser }}</strong>
+                        {% else %}
+                          {{ game }} (In Progress)
+                        {% endif %}
+                      </a>
+                    </td>
+                    <td>{{ game.winning_score }} - {{ game.losing_score }}</td>
+                    <td>{{ game.date }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">Leaderboard</div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Player</th>
+                    <th>Win %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for player in leaderboard %}
+                    <tr>
+                      <td><a href="{{ player.get_absolute_url }}">{{ player }}</a></td>
+                      <td>{{ player.win_percentage }}%</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
