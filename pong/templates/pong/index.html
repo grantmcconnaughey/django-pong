@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-heading">Recent Games</div>
           <div class="table-responsive">
@@ -48,7 +48,7 @@
           </div>
         </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-heading">Leaderboard</div>
             <div class="table-responsive">
@@ -57,6 +57,8 @@
                   <tr>
                     <th>Player</th>
                     <th>Win %</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -64,6 +66,8 @@
                     <tr>
                       <td><a href="{{ player.get_absolute_url }}">{{ player }}</a></td>
                       <td>{{ player.win_percentage }}%</td>
+                      <td>{{ player.wins.count }}</td>
+                      <td>{{ player.losses.count }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>

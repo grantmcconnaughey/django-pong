@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView
 
-from .forms import GameForm
+from .forms import GameForm, MatchupForm
 from .models import Game, Player
 
 
@@ -52,6 +52,20 @@ def add_point(request):
     }
 
     return JsonResponse(data)
+
+
+def create_matchup(request):
+    stats = None
+    if request.method == 'POST':
+        form = MatchupForm(request.POST)
+        if form.is_valid():
+            stats = form.get_stats()
+    else:
+        form = MatchupForm()
+    return render(request, 'pong/stats/create_matchup.html', {
+        'form': form,
+        'stats': stats,
+    })
 
 
 class PlayerDetailView(DetailView):

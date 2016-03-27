@@ -1,0 +1,32 @@
+{% extends 'pong/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}Create Matchup{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header">
+          <h1>Create Matchup</h1>
+        </div>
+
+        <form method="post" action="" class="form">
+          {% bootstrap_form form %}
+          {% csrf_token %}
+
+          {% bootstrap_button "View Results" button_type="submit" button_class="btn-primary btn-lg" %}
+        </form>
+
+        {% if stats %}
+          <h2>Results</h2>
+          <div class="stats">
+            <p>Out of <strong>{{ stats.games_played }}</strong> games, <strong>{{ stats.player1 }}</strong>
+              beat <strong>{{ stats.player2 }} {{ stats.player1_win_percentage }}%</strong> of the time.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

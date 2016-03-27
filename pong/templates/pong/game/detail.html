@@ -1,6 +1,7 @@
 {% extends 'pong/base.html' %}
 
 {% load bootstrap3 %}
+{% load staticfiles %}
 
 {% block title %}{{ game }}{% endblock %}
 
@@ -28,7 +29,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-5 text-center">
+      <div id="player1Container" class="col-md-3 text-center">
         <h2>{{ game.player1 }}</h2>
 
         <div id="player1Points" class="player-points">{{ game.player1_points }}</div>
@@ -38,11 +39,13 @@
             <button type="button" data-player="1" class="btn btn-primary btn-lg score-point-button">Score Point</button>
           </div>
         {% endif %}
+
+        <p class="player-result"></p>
       </div>
-      <div class="col-md-2 text-center">
-        vs.
+      <div class="col-md-6 text-center">
+        <img src="{% static "img/table.jpg" %}" class="img-responsive" alt="Ping pong table">
       </div>
-      <div class="col-md-5 text-center">
+      <div id="player2Container" class="col-md-3 text-center">
         <h2>{{ game.player2 }}</h2>
 
         <div id="player2Points" class="player-points">{{ game.player2_points }}</div>
@@ -52,6 +55,8 @@
             <button type="button" data-player="2" class="btn btn-primary btn-lg score-point-button">Score Point</button>
           </div>
         {% endif %}
+
+        <p class="player-result"></p>
       </div>
     </div>
   </div>
@@ -60,6 +65,10 @@
 {% block js-additional %}
 <script>
   var gameId = {{ game.pk }};
+
+  function gameOver(winner, loser) {
+
+  }
 
   $('.score-point-button').on('click', function(e) {
     var button = $(this);

@@ -10,6 +10,11 @@ urlpatterns = [
     url(r'^detail/(?P<pk>\d+)/$', views.GameDetailView.as_view(), name='pong_game_detail'),
     url(r'^add_point/$', views.add_point, name='pong_add_point'),
 
+    # Stats URLs
+    url(r'^stats/create_matchup/$',
+        views.create_matchup,
+        name='pong_stats_create_matchup'),
+
     # Player URLs
     url(r'^player/detail/(?P<pk>\d+)/$',
         views.PlayerDetailView.as_view(),

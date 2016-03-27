@@ -19,14 +19,20 @@ class Player(models.Model):
     def games_played(self):
         return Game.objects.filter(Q(player1=self) | Q(player2=self))
 
+    def games_played_against(self, other_player):
+        return Game.objects.filter(Q(player1=self, player2=other_player) |
+                                   Q(player1=other_player, player2=self))\
+                           .filter(winner__isnull=False)
+
     @property
     def win_percentage(self):
-        games_played = self.games_played.count()
+        # Only include completed games
+        games_played = self.games_played.filter(winner__isnull=False).count()
         if games_played == 0:
             return 0.0
 
         wins = self.wins.all().count()
-        return (wins / (games_played * 1.0)) * 100.0
+        return round((wins / (games_played * 1.0)) * 100.0, 2)
 
 
 @python_2_unicode_compatible
@@ -100,7 +106,7 @@ class Game(models.Model):
         more points, then the game went to deuce.
         """
         return (self.player1_points >= self.POINTS_TO_WIN - 1 and
-            self.player2_points >= self.POINTS_TO_WIN - 1)
+                self.player2_points >= self.POINTS_TO_WIN - 1)
 
 
 @python_2_unicode_compatible

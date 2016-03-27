@@ -1,0 +1,5 @@
+TODO
+
+* Add a way to add games that were already played.
+* Add match up report (win percentage between two players).
+* Add Slack notifications when games end.

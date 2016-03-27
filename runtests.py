@@ -25,6 +25,7 @@ try:
         ],
         SITE_ID=1,
         MIDDLEWARE_CLASSES=(),
+        STATIC_URL='/static/',
     )
 
     try:

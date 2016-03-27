@@ -47,11 +47,12 @@ class PlayerModelTests(TestCase):
 
     def test_win_percentage(self):
         player = PlayerFactory()
+        other_player = PlayerFactory()
         GameFactory(player1=player, winner=player)
         GameFactory(player1=player, winner=player)
         GameFactory(player1=player, winner=player)
-        GameFactory(player1=player, loser=player)
-        GameFactory(player1=player, loser=player)
+        GameFactory(player1=player, winner=other_player, loser=player)
+        GameFactory(player1=player, winner=other_player, loser=player)
 
         self.assertEqual(player.win_percentage, 60.0)
 
